@@ -12,8 +12,8 @@ import pytz
 router = APIRouter()
 
 # Configuración inicial del horario de disponibilidad
-HORARIO_INICIO = 10  # 10 AM
-DURACION_HORAS = 8
+HORARIO_INICIO = 4  # 10 AM
+DURACION_HORAS = 1
 RESUMEN_PATH = "data/resumen_dia.json"
 TIMEZONE = pytz.timezone("America/Bogota")  # GMT-5
 
@@ -32,7 +32,6 @@ def esta_disponible():
     hora_inicio = ahora.replace(hour=HORARIO_INICIO, minute=0, second=0, microsecond=0)
     hora_fin = hora_inicio + timedelta(hours=DURACION_HORAS)
     return hora_inicio <= ahora <= hora_fin
-
 
 # Endpoint para configurar el horario de disponibilidad, solo accesible para administradores
 @router.post("/config/horario", tags=["Time"])
@@ -62,7 +61,7 @@ async def verificar_disponibilidad():
         "fin": hora_fin.strftime('%H:%M')
     }
 
-
+# Función para generar el resumen diario y guardarlo en JSON
 def generar_resumen_diario(db: Session):
     ahora = datetime.now(TIMEZONE)
     hoy = ahora.date()
