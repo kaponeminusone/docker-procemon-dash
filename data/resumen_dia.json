@@ -1,0 +1,20 @@
+{
+    "hoy": {
+        "fecha": "2024-11-11",
+        "indicadores": 10,
+        "procesos": 2,
+        "entradas_salidas": 14,
+        "procesos_ejecutados": 3,
+        "produccion": 7,
+        "no_conformes": 13
+    },
+    "ayer": {
+        "fecha": "2024-11-10",
+        "indicadores": 0,
+        "procesos": 0,
+        "entradas_salidas": 0,
+        "procesos_ejecutados": 0,
+        "produccion": 0,
+        "no_conformes": 0
+    }
+}

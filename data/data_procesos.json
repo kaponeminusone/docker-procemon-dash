@@ -1,0 +1,151 @@
+[
+    {
+        "id_proceso": 5,
+        "id_proceso_ejecutado": 1,
+        "num_etapas": 1,
+        "no_conformes": 69,
+        "conformes": 930,
+        "etapas": [
+            {
+                "num_etapa": 1,
+                "conformes": 930,
+                "no_conformes": 69,
+                "state": true,
+                "entradas": [
+                    {
+                        "id": 8,
+                        "value": 1000.0
+                    }
+                ],
+                "indicadores": [
+                    {
+                        "id": 5,
+                        "entrada_id": 8,
+                        "checkbox": true,
+                        "range": "",
+                        "criteria": "",
+                        "state": false
+                    },
+                    {
+                        "id": 8,
+                        "entrada_id": 8,
+                        "checkbox": false,
+                        "range": "",
+                        "criteria": "",
+                        "state": true
+                    }
+                ],
+                "salidas": [
+                    {
+                        "id": 12,
+                        "value": 700.0
+                    }
+                ]
+            }
+        ],
+        "num_etapas_con_conformidades": 1,
+        "tasa_de_exito": 93.09309309309309
+    },
+    {
+        "id_proceso": 3,
+        "id_proceso_ejecutado": 1,
+        "num_etapas": 1,
+        "no_conformes": 1,
+        "conformes": 298,
+        "etapas": [
+            {
+                "num_etapa": 1,
+                "conformes": 298,
+                "no_conformes": 1,
+                "state": true,
+                "entradas": [
+                    {
+                        "id": 8,
+                        "value": 300.0
+                    }
+                ],
+                "indicadores": [
+                    {
+                        "id": 5,
+                        "entrada_id": 8,
+                        "checkbox": false,
+                        "range": "",
+                        "criteria": "",
+                        "state": true
+                    },
+                    {
+                        "id": 8,
+                        "entrada_id": 8,
+                        "checkbox": true,
+                        "range": "",
+                        "criteria": "",
+                        "state": false
+                    }
+                ],
+                "salidas": [
+                    {
+                        "id": 11,
+                        "value": 100.0
+                    },
+                    {
+                        "id": 12,
+                        "value": 100.0
+                    }
+                ]
+            }
+        ],
+        "num_etapas_con_conformidades": 1,
+        "tasa_de_exito": 99.66555183946488
+    },
+    {
+        "id_proceso": 3,
+        "id_proceso_ejecutado": 2,
+        "num_etapas": 1,
+        "no_conformes": 0,
+        "conformes": 200,
+        "etapas": [
+            {
+                "num_etapa": 1,
+                "conformes": 200,
+                "no_conformes": 0,
+                "state": false,
+                "entradas": [
+                    {
+                        "id": 8,
+                        "value": 200.0
+                    }
+                ],
+                "indicadores": [
+                    {
+                        "id": 5,
+                        "entrada_id": 8,
+                        "checkbox": true,
+                        "range": "",
+                        "criteria": "",
+                        "state": false
+                    },
+                    {
+                        "id": 8,
+                        "entrada_id": 8,
+                        "checkbox": true,
+                        "range": "",
+                        "criteria": "",
+                        "state": false
+                    }
+                ],
+                "salidas": [
+                    {
+                        "id": 11,
+                        "value": 10.0
+                    },
+                    {
+                        "id": 12,
+                        "value": 20.0
+                    }
+                ]
+            }
+        ],
+        "num_etapas_con_conformidades": 1,
+        "tasa_de_exito": 100.0
+    }
+]
