@@ -442,3 +442,41 @@ async def obtener_ultimos_procesos(size: int, db: Session = Depends(get_db)):
         return procesos
     else:
         raise HTTPException(status_code=404, detail="No se encontraron procesos.")
+
+
+
+@router.put("/update-creation-date/{registro_id}")
+async def update_creation_date(
+    registro_id: int,
+    dia: int = None,
+    mes: int = None,
+    anio: int = None,
+    hora: int = None,
+    minuto: int = None,
+    segundo: int = None,
+    db: Session = Depends(get_db)
+):
+    # Buscar el registro por ID
+    registro = db.query(Registro).filter(Registro.id == registro_id).first()
+    
+    if not registro:
+        raise HTTPException(status_code=404, detail="Registro no encontrado.")
+
+    # Obtiene la fecha y hora actuales del campo "creado"
+    fecha_creada = registro.creado
+
+    # Modifica la fecha y hora con los valores proporcionados
+    nueva_fecha = fecha_creada.replace(
+        day=dia if dia is not None else fecha_creada.day,
+        month=mes if mes is not None else fecha_creada.month,
+        year=anio if anio is not None else fecha_creada.year,
+        hour=hora if hora is not None else fecha_creada.hour,
+        minute=minuto if minuto is not None else fecha_creada.minute,
+        second=segundo if segundo is not None else fecha_creada.second,
+    )
+
+    # Actualiza el campo "creado" del registro
+    registro.creado = nueva_fecha
+    db.commit()
+
+    return {"message": "Fecha y hora actualizadas exitosamente.", "nueva_fecha": registro.creado}
