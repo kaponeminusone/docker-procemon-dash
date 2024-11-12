@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.models.models import Registro, RegistroEntradas, RegistroIndicadores, RegistroProcesos, RegistroProcesoEjecutado, ProcesosEjecutados
 from typing import Optional
+import pytz
 
 router = APIRouter()
 
@@ -14,6 +15,7 @@ router = APIRouter()
 HORARIO_INICIO = 10  # 10 AM
 DURACION_HORAS = 8
 RESUMEN_PATH = "data/resumen_dia.json"
+TIMEZONE = pytz.timezone("America/Bogota")  # GMT-5
 
 # Función para verificar si el usuario es admin
 async def get_admin_user(current_user: dict = Depends(get_current_user)):
@@ -26,10 +28,11 @@ async def get_admin_user(current_user: dict = Depends(get_current_user)):
 
 # Función para verificar la disponibilidad actual
 def esta_disponible():
-    ahora = datetime.now()
+    ahora = datetime.now(TIMEZONE)
     hora_inicio = ahora.replace(hour=HORARIO_INICIO, minute=0, second=0, microsecond=0)
     hora_fin = hora_inicio + timedelta(hours=DURACION_HORAS)
     return hora_inicio <= ahora <= hora_fin
+
 
 # Endpoint para configurar el horario de disponibilidad, solo accesible para administradores
 @router.post("/config/horario", tags=["Time"])
@@ -49,8 +52,9 @@ async def configurar_horario(hora_inicio: int, duracion_horas: int, admin_user: 
 # Endpoint para verificar disponibilidad, devuelve el estado y el horario de inicio y fin
 @router.get("/disponibilidad", tags=["Time"])
 async def verificar_disponibilidad():
+    ahora = datetime.now(TIMEZONE)
     disponible = esta_disponible()
-    hora_inicio = datetime.now().replace(hour=HORARIO_INICIO, minute=0, second=0, microsecond=0)
+    hora_inicio = ahora.replace(hour=HORARIO_INICIO, minute=0, second=0, microsecond=0)
     hora_fin = hora_inicio + timedelta(hours=DURACION_HORAS)
     return {
         "disponible": disponible,
@@ -58,14 +62,15 @@ async def verificar_disponibilidad():
         "fin": hora_fin.strftime('%H:%M')
     }
 
-# Función para generar el resumen diario y guardarlo en JSON
+
 def generar_resumen_diario(db: Session):
-    hoy = datetime.now().date()
+    ahora = datetime.now(TIMEZONE)
+    hoy = ahora.date()
     ayer = hoy - timedelta(days=1)
 
-    # Filtrar registros del día actual y el día anterior en la base de datos
-    registros_hoy = db.query(Registro).filter(Registro.creado >= hoy).all()
-    registros_ayer = db.query(Registro).filter(Registro.creado >= ayer, Registro.creado < hoy).all()
+    # Filtrar registros en base a la zona horaria
+    registros_hoy = db.query(Registro).filter(Registro.creado >= ahora.replace(hour=0, minute=0, second=0, microsecond=0)).all()
+    registros_ayer = db.query(Registro).filter(Registro.creado >= ayer, Registro.creado < ahora.replace(hour=0, minute=0, second=0, microsecond=0)).all()
 
     # Contar los registros del día actual desde las tablas de asociación
     resumen_hoy = {

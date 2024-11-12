@@ -3,9 +3,13 @@
 FROM python:3.9
 
 ENV DOCKER_BUILDKIT=1
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+ENV PYTHONUNBUFFERED=1
 
-# Instala Tex Live para pdflatex
-RUN apt-get update && apt-get install -y texlive-latex-base
+# Instala Tex Live para pdflatex y las fuentes adicionales
+RUN apt-get update && \
+    apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-fonts-extra
+
 RUN python -m venv .venv
 
 COPY . .
