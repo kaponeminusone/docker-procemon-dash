@@ -1,6 +1,6 @@
 import base64
 import os
-import asyncio  # Importar asyncio para manejar el timeout
+import asyncio
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
@@ -102,12 +102,12 @@ async def send_report(destino: List[int], pdf: UploadFile = File(...), db: Sessi
            "attachments": [attachment],
         }
 
-        # Enviar el correo con un timeout de 50 segundos
+        # Enviar el correo en un hilo separado con un timeout de 50 segundos
         try:
-            email = await asyncio.wait_for(resend.Emails.send(params), timeout=TIMEOUT_SECONDS)
+            email = await asyncio.wait_for(asyncio.to_thread(resend.Emails.send, params), timeout=TIMEOUT_SECONDS)
             return {"message": "Reporte enviado con éxito!", "email": email}
         except asyncio.TimeoutError:
             return {"message": "El envío del reporte tomó demasiado tiempo. Continúa con el proceso normal."}
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Error interno al enviar el correo: {str(e)}")
